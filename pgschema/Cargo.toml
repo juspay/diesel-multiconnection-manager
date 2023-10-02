@@ -1,0 +1,13 @@
+[package]
+name = "diesel-pgschema"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+diesel = { workspace = true, features = ["r2d2", "postgres", "postgres_backend"] }
+env_logger = {workspace = true }
+log = { workspace = true }
+derive_more = { workspace = true }
+anyhow = { workspace = true }

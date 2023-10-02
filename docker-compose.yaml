@@ -1,0 +1,16 @@
+version: "3.4"
+
+services:
+  postgres:
+    image: postgres:12-alpine
+    command: ["postgres", "-c", "log_statement=all"]
+    volumes:
+    - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    container_name: pgschema_example_postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: "docker"
+      POSTGRES_DB: "test"
+    restart: on-failure
+    network_mode: bridge
