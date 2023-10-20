@@ -1,8 +1,5 @@
 -- Your SQL goes here
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 CREATE TABLE IF NOT EXISTS users(
-    id UUID NOT NULL DEFAULT uuid_generate_v4() PRIMARY KEY,
-    username TEXT NOT NULL,
-    email TEXT NOT NULL,
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    username TEXT NOT NULL PRIMARY KEY,
+    email TEXT NOT NULL
 );

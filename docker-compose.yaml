@@ -5,8 +5,8 @@ services:
     image: postgres:12-alpine
     command: ["postgres", "-c", "log_statement=all"]
     volumes:
-    - ./init.sql:/docker-entrypoint-initdb.d/init.sql
-    container_name: pgschema_example_postgres
+    - ./init_pg.sql:/docker-entrypoint-initdb.d/init.sql
+    container_name: multitenancy_example_postgres
     ports:
       - "5432:5432"
     environment:
@@ -14,3 +14,19 @@ services:
       POSTGRES_DB: "test"
     restart: on-failure
     network_mode: bridge
+  
+  mysql:
+    image: mysql:8.1
+      # NOTE: use of "mysql_native_password" is not recommended: https://dev.mysql.com/doc/refman/8.0/en/upgrading-from-previous-series.html#upgrade-caching-sha2-password
+      # (this is just an example, not intended to be a production configuration)
+    restart: on-failure
+    command: --default-authentication-plugin=mysql_native_password
+    container_name: multitenancy_example_mysql
+    volumes:
+    - ./init_my.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: "docker"
+    network_mode: bridge
+

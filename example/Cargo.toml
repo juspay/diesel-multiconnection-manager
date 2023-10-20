@@ -8,7 +8,9 @@ edition = "2021"
 [dependencies]
 diesel = { workspace = true, features = ["chrono", "uuid"] }
 dotenv = { workspace = true }
-pgschema = { path = "../pgschema", package = "diesel-pgschema" }
+tenancy = { path = "../multi_tenancy", package = "multi-tenancy" }
 # To help with generating uuids
 uuid = {version = "1.3.4", features = ["v4", "serde"]}
 chrono = { version = "0.4", features = ["serde"] }
+rand = { workspace = true }
+anyhow = {workspace = true }

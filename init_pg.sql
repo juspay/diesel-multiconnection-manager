@@ -1,0 +1,10 @@
+CREATE SCHEMA test1;
+CREATE SCHEMA test2;
+CREATE TABLE IF NOT EXISTS test1.users(
+    username TEXT PRIMARY KEY,
+    email TEXT NOT NULL
+);
+CREATE TABLE IF NOT EXISTS test2.users(
+    username TEXT PRIMARY KEY,
+    email TEXT NOT NULL
+);

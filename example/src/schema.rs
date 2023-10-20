@@ -1,10 +1,8 @@
 // @generated automatically by Diesel CLI.
 
 diesel::table! {
-    users (id) {
-        id -> Uuid,
+    users (username) {
         username -> Text,
         email -> Text,
-        created_at -> Timestamp,
     }
 }

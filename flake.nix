@@ -38,6 +38,7 @@
                   cargo-watch
                   clippy
                   diesel-cli
+                  sqlite
                 ];
               darwinPkgs = with pkgs; [
                   darwin.apple_sdk.frameworks.Security

@@ -1,0 +1,16 @@
+CREATE SCHEMA test1;
+CREATE SCHEMA test2;
+
+USE test1;
+CREATE TABLE IF NOT EXISTS users(
+    username VARCHAR(256) PRIMARY KEY,
+    email TEXT NOT NULL
+);
+USE test2;
+CREATE TABLE IF NOT EXISTS users(
+    username VARCHAR(256) PRIMARY KEY,
+    email TEXT NOT NULL
+);
+
+GRANT ALL PRIVILEGES ON test1.* TO 'root';
+GRANT ALL PRIVILEGES ON test2.* TO 'root';

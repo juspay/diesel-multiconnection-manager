@@ -1,5 +1,5 @@
 [workspace.package]
-name = "diesel-multi-tenancy-pg"
+name = "diesel-multi-tenancy"
 version = "0.1.0"
 edition = "2021"
 
@@ -8,7 +8,7 @@ edition = "2021"
 [workspace]
 members = [
     "example",
-    "pgschema"
+    "multi_tenancy"
 ]
 resolver = "2"
 
@@ -19,3 +19,4 @@ dotenv = "0.15.0"
 log = { version="0.4.20"}
 env_logger = "0.8"
 derive_more = "0.99.17"
+rand = "0.8.5"
