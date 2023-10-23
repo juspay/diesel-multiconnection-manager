@@ -2,6 +2,15 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## v2.1.0 - 2023-10-23
+### Package updates
+- diesel-multiconnection-manager bumped to diesel-multiconnection-manager-v0.1.0
+### Global changes
+#### Features
+- added README - (33a829a) - Kartik Gajendra
+
+- - -
+
 ## v2.0.0 - 2023-10-23
 ### Packages
 - multi-tenancy locked to v0.0.0
