@@ -8,7 +8,7 @@ edition = "2021"
 [workspace]
 members = [
     "example",
-    "multi_tenancy"
+    "multi_connection_manager"
 ]
 resolver = "2"
 

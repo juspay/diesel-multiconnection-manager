@@ -2,6 +2,15 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## v2.0.0 - 2023-10-23
+### Packages
+- multi-tenancy locked to v0.0.0
+### Global changes
+#### Features
+- added README - (ca7c79e) - Kartik Gajendra
+
+- - -
+
 ## v1.0.0 - 2023-10-23
 ### Packages
 - multi-tenancy locked to v0.0.0

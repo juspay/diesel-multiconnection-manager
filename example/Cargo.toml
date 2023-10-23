@@ -8,7 +8,7 @@ edition = "2021"
 [dependencies]
 diesel = { workspace = true, features = ["chrono", "uuid"] }
 dotenv = { workspace = true }
-tenancy = { path = "../multi_tenancy", package = "multi-tenancy" }
+tenancy = { path = "../multi_connection_manager", package = "diesel-multiconnection-manager" }
 # To help with generating uuids
 uuid = {version = "1.3.4", features = ["v4", "serde"]}
 chrono = { version = "0.4", features = ["serde"] }

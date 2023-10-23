@@ -109,11 +109,11 @@ impl ConnectionConfig {
 }
 
 #[derive(Deref, DerefMut, Clone)]
-pub struct PgSchemaManager(HashMap<String, MultiConnectionPool>);
+pub struct MultiConnectionManager(HashMap<String, MultiConnectionPool>);
 
-impl<const N: usize> From<[ConnectionConfig; N]> for PgSchemaManager {
+impl<const N: usize> From<[ConnectionConfig; N]> for MultiConnectionManager {
     fn from(value: [ConnectionConfig; N]) -> Self {
-        let mut schema_manager: PgSchemaManager = PgSchemaManager(HashMap::new());
+        let mut schema_manager: MultiConnectionManager = MultiConnectionManager(HashMap::new());
         for config in value.into_iter() {
             let pool: MultiConnectionPool = match config.database {
                 DatabaseKind::Postgres => {
@@ -159,7 +159,7 @@ impl<const N: usize> From<[ConnectionConfig; N]> for PgSchemaManager {
     }
 }
 
-impl PgSchemaManager {
+impl MultiConnectionManager {
     // hello darkness my old friend
     // This would have been easier in haskell
 

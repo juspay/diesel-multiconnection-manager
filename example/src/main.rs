@@ -10,7 +10,7 @@ use diesel::{
     ExpressionMethods, Insertable, MysqlConnection, PgConnection, QueryDsl, Queryable,
     QueryableByName, RunQueryDsl, Selectable, SqliteConnection,
 };
-use tenancy::{ConnectionConfig, PgSchemaManager};
+use tenancy::{ConnectionConfig, MultiConnectionManager};
 
 #[derive(QueryableByName, Queryable, Selectable, Insertable, Clone, Debug)]
 #[diesel(check_for_backend(diesel::pg::Pg))]
@@ -84,7 +84,7 @@ fn main() -> anyhow::Result<()> {
             None,
         ),
     ];
-    let schema_manager = PgSchemaManager::from(configs);
+    let schema_manager = MultiConnectionManager::from(configs);
 
     run_example_postgres(
         schema_manager.get_pg_conn("test_1_pg".into()).unwrap(),
