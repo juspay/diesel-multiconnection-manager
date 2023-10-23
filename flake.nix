@@ -36,6 +36,7 @@
                   rustfmt
                   bacon
                   cargo-watch
+                  cargo-edit
                   clippy
                   diesel-cli
                   sqlite
