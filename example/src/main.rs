@@ -28,13 +28,13 @@ fn main() -> anyhow::Result<()> {
     let mysql_database_url =
         env::var("MYSQL_DATABASE_URL").expect("MYSQL_DATABASE_URL must be set");
     let sqlite_database_url = String::new();
-    let configs = [
+    let configs = vec![
         ConnectionConfig::new(
             "test_1_pg".into(),
             tenancy::DatabaseKind::Postgres,
             "test".into(),
             pg_database_url.clone(),
-            "test1".into(),
+            Some("test1".into()),
             10,
             None,
         ),
@@ -43,7 +43,7 @@ fn main() -> anyhow::Result<()> {
             tenancy::DatabaseKind::Postgres,
             "test".into(),
             pg_database_url.clone(),
-            "test2".into(),
+            Some("test2".into()),
             10,
             None,
         ),
@@ -52,7 +52,7 @@ fn main() -> anyhow::Result<()> {
             tenancy::DatabaseKind::MySQL,
             "test1".into(),
             mysql_database_url.clone(),
-            "test1".into(), //schema does not even matter
+            None, //schema does not even matter
             5,
             None,
         ),
@@ -61,7 +61,7 @@ fn main() -> anyhow::Result<()> {
             tenancy::DatabaseKind::MySQL,
             "test2".into(),
             mysql_database_url.clone(),
-            "test2".into(),
+            None,
             10,
             None,
         ),
@@ -70,7 +70,7 @@ fn main() -> anyhow::Result<()> {
             tenancy::DatabaseKind::SQLite,
             "test1.db".into(),
             sqlite_database_url.clone(),
-            "test1".into(), //schema does not even matter
+            None, //schema does not even matter
             5,
             None,
         ),
@@ -79,34 +79,26 @@ fn main() -> anyhow::Result<()> {
             tenancy::DatabaseKind::SQLite,
             "test2.db".into(),
             sqlite_database_url.clone(),
-            "test2".into(),
+            None,
             10,
             None,
         ),
     ];
-    let schema_manager = MultiConnectionManager::from(configs);
+    let schema_manager = MultiConnectionManager::new(configs)?;
 
     run_example_postgres(
-        schema_manager.get_pg_conn("test_1_pg".into()).unwrap(),
-        schema_manager.get_pg_conn("test_2_pg".into()).unwrap(),
+        schema_manager.get_pg_conn("test_1_pg")?,
+        schema_manager.get_pg_conn("test_2_pg")?,
     );
 
     run_example_mysql(
-        schema_manager
-            .get_mysql_conn("test_1_mysql".into())
-            .unwrap(),
-        schema_manager
-            .get_mysql_conn("test_2_mysql".into())
-            .unwrap(),
+        schema_manager.get_mysql_conn("test_1_mysql")?,
+        schema_manager.get_mysql_conn("test_2_mysql")?,
     );
 
     run_example_sqlite(
-        schema_manager
-            .get_sqlite_conn("test_1_sqlite".into())
-            .unwrap(),
-        schema_manager
-            .get_sqlite_conn("test_2_sqlite".into())
-            .unwrap(),
+        schema_manager.get_sqlite_conn("test_1_sqlite")?,
+        schema_manager.get_sqlite_conn("test_2_sqlite")?,
     );
     Ok(())
 }

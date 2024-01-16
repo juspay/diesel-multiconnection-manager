@@ -14,9 +14,10 @@ resolver = "2"
 
 [workspace.dependencies]
 diesel = { version = "2.1.2", features = ["postgres", "postgres_backend", "r2d2", "chrono", "uuid"] }
-anyhow = "1.0.75"
+thiserror = "1.0.56"
 dotenv = "0.15.0"
 log = { version="0.4.20"}
 env_logger = "0.8"
 derive_more = "0.99.17"
 rand = "0.8.5"
+anyhow = "1.0.75"

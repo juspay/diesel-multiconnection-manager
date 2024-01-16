@@ -2,12 +2,24 @@
 name = "diesel-multiconnection-manager"
 version = "0.1.0"
 edition = "2021"
+authors = [""]
+repository = "https://github.com/juspay/hsl-rs.git"
+homepage = "https://github.com/juspay/hsl-rs.git"
+license = "MIT"
+readme = "README.md"
+documentation = "URL"
+description = "create and manage connections to multiple database hosts, schemas and database systems in your rust codebase"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-diesel = { workspace = true, features = ["r2d2", "postgres", "postgres_backend", "mysql", "sqlite"] }
-env_logger = {workspace = true }
+diesel = { workspace = true, features = ["r2d2"] }
+env_logger = {workspace = true, optional = true }
 log = { workspace = true }
 derive_more = { workspace = true }
-anyhow = { workspace = true }
+thiserror = { workspace = true }
+
+[features]
+postgres = ["diesel/postgres", "diesel/postgres_backend"]
+mysql = ["diesel/mysql"]
+sqlite = ["diesel/sqlite"]
