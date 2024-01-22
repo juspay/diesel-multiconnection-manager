@@ -53,7 +53,7 @@ let configs = [
             DatabaseKind::MySQL,
             "test1".into(),
             mysql_database_url.clone(),
-            "test1".into(), //schema does not even matter
+            None,
             5,
             None,
         ),
@@ -63,7 +63,7 @@ let configs = [
             DatabaseKind::SQLite,
             "test1.db".into(),
             sqlite_database_url.clone(),
-            "test1".into(), //schema does not even matter
+            None,
             5,
             None,
         ),

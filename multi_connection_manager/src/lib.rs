@@ -1,3 +1,78 @@
+//! diesel multiconnection manager lets you create and manage connections to multiple database hosts, schemas and database systems in your rust codebase.
+//!
+//! The way to use it is -
+//!
+//! ### Create a connection config
+
+//! ```
+//! ConnectionConfig::new(
+//!     connection_name,
+//!     database_system,
+//!     database_name,
+//!     database_host_url,
+//!     schema_name,
+//!     max_connections_allowed,
+//!     database_options,
+//! )
+//! ```
+//! **Connection name must be unique** and database options is well, optional. This is what it would look like in code:
+//!
+//! ```
+//! let configs = [
+//!         ConnectionConfig::new(
+//!             "test_1_pg".into(),
+//!             DatabaseKind::Postgres,
+//!             "test".into(),
+//!             pg_database_url.clone(),
+//!             "test1".into(),
+//!             10,
+//!             None,
+//!         ),
+//!         .... //other postgres configs
+//!         ConnectionConfig::new(
+//!             "test_1_mysql".into(),
+//!             DatabaseKind::MySQL,
+//!             "test1".into(),
+//!             mysql_database_url.clone(),
+//!             None, //schema does not even matter
+//!             5,
+//!             None,
+//!         ),
+//!         .... // other mysql configs
+//!         ConnectionConfig::new(
+//!             "test_1_sqlite".into(),
+//!             DatabaseKind::SQLite,
+//!             "test1.db".into(),
+//!             sqlite_database_url.clone(),
+//!             None, //schema does not even matter
+//!             5,
+//!             None,
+//!         ),
+//!         .... // other sqlite configs
+//!     ];
+//! ```
+
+//! ### Initialize the MultiConnectionManager
+//!
+//! The connection manager lets you get connections to a particular database. Just give it a vector of connection configs to start
+//!
+//! ```
+//! let manager = MultiConnectionManager::from(configs);
+//! ```
+//! ### Get a connection whenever you need it
+//!
+//! Based on the database system, call these functions to get a connection:
+//! ```
+//! schema_manager.get_pg_conn(connection_name)
+//! schema_manager.get_mysql_conn(connection_name)
+//! schema_manager.get_sqlite_conn(connection_name)
+//! ```
+//! All these functions return `PooledConnection<ConnectionManager<M>>` where `M` is any of `PgConnection | MysqlConnection | SqliteConnection`
+//!
+//! That's pretty much it, enjoy!
+//!
+//! Read more about dependencies and contributions here: [github link]
+
 use derive_more::{Deref, DerefMut, Display};
 use std::collections::HashMap;
 use thiserror::Error;
@@ -151,7 +226,6 @@ impl ConnectionConfig {
 pub struct MultiConnectionManager(HashMap<String, MultiConnectionPool>);
 
 impl MultiConnectionManager {
-
     pub fn new(value: Vec<ConnectionConfig>) -> McmResult<Self> {
         let mut schema_manager: MultiConnectionManager = MultiConnectionManager(HashMap::new());
         for config in value.into_iter() {
@@ -200,7 +274,6 @@ impl MultiConnectionManager {
         }
         Ok(schema_manager)
     }
-
 
     // hello darkness my old friend
     // This would have been easier in haskell
@@ -266,10 +339,5 @@ impl MultiConnectionManager {
 }
 
 /*
-
-
-Keep PostgreSQL, MySQL and SQLite support behind specific feature flags so that users can selectively pull in required features and dependencies.
-
-And yeah, update the documentation with prerequisites that need to be installed (PostgreSQL and MySQL packages), etc. Stuff for users who don’t use nix basically.
-
+TODO: And yeah, update the documentation with prerequisites that need to be installed (PostgreSQL and MySQL packages), etc. Stuff for users who don’t use nix basically.
 */
