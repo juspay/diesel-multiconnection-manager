@@ -76,7 +76,7 @@ let configs = [
 The connection manager lets you get connections to a particular database. Just give it a vector of connection configs to start
 
 ```
-let manager = MultiConnectionManager::from(configs);
+let manager = MultiConnectionManager::new(configs);
 ```
 ### Get a connection whenever you need it
 

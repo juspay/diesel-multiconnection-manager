@@ -57,7 +57,7 @@
 //! The connection manager lets you get connections to a particular database. Just give it a vector of connection configs to start
 //!
 //! ```
-//! let manager = MultiConnectionManager::from(configs);
+//! let manager = MultiConnectionManager::new(configs);
 //! ```
 //! ### Get a connection whenever you need it
 //!
@@ -180,6 +180,7 @@ impl ConnectionConfig {
         }
     }
 
+    #[cfg(feature = "postgres")]
     fn pg_conn_url(&self) -> String {
         match (&self.options, &self.schema) {
             (None, None) => format!(
@@ -201,6 +202,7 @@ impl ConnectionConfig {
         }
     }
 
+    #[cfg(feature = "mysql")]
     fn mysql_conn_url(&self) -> String {
         // mysql considers schema and database name the same
         if let Some(configs) = &self.options {
@@ -213,6 +215,7 @@ impl ConnectionConfig {
         format!("{}/{}", self.database_host_url, self.database_name)
     }
 
+    #[cfg(feature = "sqlite")]
     fn sqlite_conn_url(&self) -> String {
         // provide a file name, file URI or :memory:
         if self.database_host_url.eq(":memory:") {
@@ -232,7 +235,7 @@ impl MultiConnectionManager {
             let pool: MultiConnectionPool = match config.database {
                 #[cfg(feature = "postgres")]
                 DatabaseKind::Postgres => {
-                    let manager = ConnectionManager::<PgConnection>::new(config.conn_url());
+                    let manager = ConnectionManager::<PgConnection>::new(config.pg_conn_url());
                     MultiConnectionPool::Pg(
                         Pool::builder()
                             .max_size(config.connection_count)
@@ -245,7 +248,8 @@ impl MultiConnectionManager {
                 }
                 #[cfg(feature = "mysql")]
                 DatabaseKind::MySQL => {
-                    let manager = ConnectionManager::<MysqlConnection>::new(config.conn_url());
+                    let manager =
+                        ConnectionManager::<MysqlConnection>::new(config.mysql_conn_url());
                     MultiConnectionPool::Mysql(
                         Pool::builder()
                             .max_size(config.connection_count)
@@ -258,7 +262,8 @@ impl MultiConnectionManager {
                 }
                 #[cfg(feature = "sqlite")]
                 DatabaseKind::SQLite => {
-                    let manager = ConnectionManager::<SqliteConnection>::new(config.conn_url());
+                    let manager =
+                        ConnectionManager::<SqliteConnection>::new(config.sqlite_conn_url());
                     MultiConnectionPool::Sqlite(
                         Pool::builder()
                             .max_size(config.connection_count)
@@ -278,7 +283,7 @@ impl MultiConnectionManager {
     // hello darkness my old friend
     // This would have been easier in haskell
     #[cfg(feature = "postgres")]
-    pub fn get_pg_conn(&self, name: &'static str) -> ResultConnection<PgConnection> {
+    pub fn get_pg_conn(&self, name: &str) -> ResultConnection<PgConnection> {
         let conn = match self.get(name).ok_or(McmError::InvalidConnectionNameError {
             db: DatabaseKind::Postgres,
             conn_name: name.into(),
@@ -288,6 +293,7 @@ impl MultiConnectionManager {
                 conn_name: name.into(),
                 error: err.to_string(),
             })?,
+            #[cfg(any(feature = "mysql", feature = "sqlite"))]
             _ => {
                 return Err(McmError::InvalidConnectionTypeError {
                     db: DatabaseKind::Postgres,
@@ -298,7 +304,7 @@ impl MultiConnectionManager {
     }
 
     #[cfg(feature = "mysql")]
-    pub fn get_mysql_conn(&self, name: &'static str) -> ResultConnection<MysqlConnection> {
+    pub fn get_mysql_conn(&self, name: &str) -> ResultConnection<MysqlConnection> {
         let conn = match self.get(name).ok_or(McmError::InvalidConnectionNameError {
             db: DatabaseKind::MySQL,
             conn_name: name.into(),
@@ -308,6 +314,7 @@ impl MultiConnectionManager {
                 conn_name: name.into(),
                 error: err.to_string(),
             })?,
+            #[cfg(any(feature = "postgres", feature = "sqlite"))]
             _ => {
                 return Err(McmError::InvalidConnectionTypeError {
                     db: DatabaseKind::MySQL,
@@ -318,7 +325,7 @@ impl MultiConnectionManager {
     }
 
     #[cfg(feature = "sqlite")]
-    pub fn get_sqlite_conn(&self, name: &'static str) -> ResultConnection<SqliteConnection> {
+    pub fn get_sqlite_conn(&self, name: &str) -> ResultConnection<SqliteConnection> {
         let conn = match self.get(name).ok_or(McmError::InvalidConnectionNameError {
             db: DatabaseKind::SQLite,
             conn_name: name.into(),
@@ -328,6 +335,7 @@ impl MultiConnectionManager {
                 conn_name: name.into(),
                 error: err.to_string(),
             })?,
+            #[cfg(any(feature = "postgres", feature = "mysql"))]
             _ => {
                 return Err(McmError::InvalidConnectionTypeError {
                     db: DatabaseKind::SQLite,
