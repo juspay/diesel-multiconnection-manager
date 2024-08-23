@@ -13,7 +13,7 @@ members = [
 resolver = "2"
 
 [workspace.dependencies]
-diesel = { version = "2.1.2", features = ["postgres", "postgres_backend", "r2d2", "chrono", "uuid"] }
+diesel = { version = "2.2.3", features = ["postgres", "postgres_backend", "r2d2", "chrono", "uuid"] }
 thiserror = "1.0.56"
 dotenv = "0.15.0"
 log = { version="0.4.20"}
