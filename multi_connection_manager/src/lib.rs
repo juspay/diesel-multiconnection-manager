@@ -73,6 +73,9 @@
 //!
 //! Read more about dependencies and contributions here: [github link]
 
+#[cfg(feature = "postgres")]
+pub mod pg_schema;
+
 use derive_more::{Deref, DerefMut, Display};
 use std::collections::HashMap;
 use thiserror::Error;

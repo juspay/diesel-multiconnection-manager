@@ -2,7 +2,7 @@
   inputs = {
     flake-utils.url = "github:numtide/flake-utils";
     naersk.url = "github:nix-community/naersk";
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
   };
 
   outputs = { self, flake-utils, naersk, nixpkgs }:
@@ -17,7 +17,11 @@
       in rec {
         # For `nix build` & `nix run`:
         defaultPackage = naersk'.buildPackage {
-          nativeBuildInputs = with pkgs; [];
+          nativeBuildInputs = with pkgs; [
+            postgresql_12
+            libmysqlclient
+            sqlite
+          ];
           src = ./.;
         };
 
@@ -33,6 +37,9 @@
                   libiconv
                   # Extras
                   rust-analyzer
+                  libpqxx
+                  libmysqlclient
+                  postgresql_12
                   rustfmt
                   bacon
                   cargo-watch

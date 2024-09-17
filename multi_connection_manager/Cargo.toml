@@ -20,6 +20,6 @@ derive_more = { workspace = true }
 thiserror = { workspace = true }
 
 [features]
-postgres = ["diesel/postgres", "diesel/postgres_backend"]
+postgres = ["diesel/postgres", "diesel/postgres_backend", "diesel/i-implement-a-third-party-backend-and-opt-into-breaking-changes"]
 mysql = ["diesel/mysql"]
 sqlite = ["diesel/sqlite"]
